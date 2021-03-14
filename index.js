@@ -135,18 +135,17 @@ Use the higher order function getAverageGoals to do the following:
 */
 
 function getAverageGoals(cb) {
-    const finals = cb(fifaData);
-    const homeGoals = [];
-    const awayGoals = [];
+    const finals = cb;
+    const goals = [];
     for (let i = 0; i < finals.length; i++) {
-        homeGoals.push(finals[i]['Home Team Goals']);
-        awayGoals.push(finals[i]['Away Team Goals']);
+        goals.push(finals[i]['Home Team Goals']);
+        goals.push(finals[i]['Away Team Goals']);
     }
-    homeGoals.reduce()
-
-
+    let goalsTotal = goals.reduce((accumulator, currentValue) => {
+        return accumulator + currentValue;
+    }, 0)
+    return (goalsTotal / (goals.length / 2)).toFixed(2);
 }
-
 
 
 /// 🥅 STRETCH 🥅 ///
@@ -157,12 +156,31 @@ Create a function called `getCountryWins` that takes the parameters `data` and `
 Hint: Investigate your data to find "team initials"!
 Hint: use `.reduce` */
 
-function getCountryWins(/* code here */) {
-
-    /* code here */
-
+function getWinner(obj) {
+    let output = '';
+    if (obj['Home Team Goals'] > obj['Away Team Goals']) {
+        output = obj['Home Team Initials'];
+            
+    } else {
+        output = obj['Away Team Initials'];
+    }
+    return output;
 }
 
+function getCountryWins(data, country) {
+    let newData = getFinals(data);
+    const countryArr = [];
+    for (let i = 0; i < newData.length; i++) {
+        countryArr.push(getWinner(newData[i]));
+    }
+    console.log(countryArr);
+    return countryArr.reduce((p, c) => {
+        if (c === country) {
+            p++;
+        }
+        return p;
+    }, 0)
+}
 
 
 /* 💪💪💪💪💪 Stretch 2: 💪💪💪💪💪 
